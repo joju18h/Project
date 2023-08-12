@@ -1,10 +1,12 @@
 #include "PlayerYouth.h"
 
-YouthPlayer::YouthPlayer() : Player("Noah"), age(4)
+template<typename T>
+YouthPlayer<T>::YouthPlayer() : Player<T>("Noah"), age(4)
 {
 }
 
-YouthPlayer::YouthPlayer(int age) : Player("Noah"), age(age)
+template<typename T>
+YouthPlayer<T>::YouthPlayer(int age) : Player<T>("Noah"), age(age)
 {
     if (age < 4)
         this->age = 4;
@@ -12,11 +14,13 @@ YouthPlayer::YouthPlayer(int age) : Player("Noah"), age(age)
         this->age = 19;
 }
 
-YouthPlayer::YouthPlayer(const YouthPlayer& player) : Player(player), age(player.age), attack_cards(player.attack_cards)
+template<typename T>
+YouthPlayer<T>::YouthPlayer(const YouthPlayer& player) : Player<T>(player), age(player.age), attack_cards(player.attack_cards)
 {
 }
 
-void YouthPlayer::set_age(int age)
+template<typename T>
+void YouthPlayer<T>::set_age(int age)
 {
     if (age < 4)
         this->age = 4;
@@ -26,36 +30,47 @@ void YouthPlayer::set_age(int age)
         this->age = age;
 }
 
-int YouthPlayer::get_age() const
+template<typename T>
+int YouthPlayer<T>::get_age() const
 {
     return age;
 }
 
-void YouthPlayer::add_attack_card(double card)
+template<typename T>
+void YouthPlayer<T>::add_attack_card(T card)
 {
     attack_cards.push_back(card);
 }
 
-void YouthPlayer::add_attack_cards(const std::vector<double>& cards)
+template<typename T>
+void YouthPlayer<T>::add_attack_cards(const std::vector<T>& cards)
 {
     attack_cards.insert(attack_cards.end(), cards.begin(), cards.end());
 }
 
-double YouthPlayer::sum_attack_cards() const
+template<typename T>
+T YouthPlayer<T>::sum_attack_cards() const
 {
-    double sum = 0.0;
-    for (double card : attack_cards)
+    T sum = 0;
+    for (T card : attack_cards)
     {
         sum += card;
     }
     return sum;
 }
 
-double YouthPlayer::sum_all_cards() const
+template<typename T>
+T YouthPlayer<T>::sum_all_cards() const
 {
     return sum_attack_cards() - sumDependentCards();
 }
 
-YouthPlayer::~YouthPlayer()
+template<typename T>
+YouthPlayer<T>::~YouthPlayer()
 {
 }
+
+// Explicit template instantiation for commonly used types
+template class YouthPlayer<int>;
+template class YouthPlayer<double>;
+// Add more instantiations for other types as needed
