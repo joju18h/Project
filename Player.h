@@ -109,7 +109,7 @@ T Player<T>::sumAttackCards() const
 {
     T sum = 0;
     for (T card : this->attackCards) {
-        sum += card;
+        sum += (T)card;
     }
     return sum;
 };
@@ -159,6 +159,7 @@ void Player<T>::operator>>(double amt)
 template <typename T>
 T Player<T>::sumAllCards() const
 {
-    return (this->sumAttackCards() - this->sumDependentCards());
+    return ((T)(this->sumAttackCards() - this->sumDependentCards()));
 };
+
 #endif // PLAYER_H
