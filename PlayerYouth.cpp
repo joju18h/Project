@@ -88,7 +88,4 @@ YouthPlayer<T>::~YouthPlayer()
 {
 }
 
-// Explicit template instantiation for commonly used types
-template class YouthPlayer<int>;
-template class YouthPlayer<double>;
-// Add more instantiations for other types as needed
+
