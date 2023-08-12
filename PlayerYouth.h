@@ -4,7 +4,7 @@
 #include "Player.h"
 
 template<typename T>
-class YouthPlayer : public Player<T>
+class YouthPlayer: public Player<T>
 {
 private:
     int age;
