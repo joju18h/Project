@@ -75,6 +75,7 @@ std::string Player<T>::getName() const{
 template <typename T>
 void Player<T>::addDependentCard(int numCards){
     //generate random number with srand based on time
+    this->dependentCards.clear();
     srand(time(0));
     for(int i = 0; i < numCards; i++){
         this->dependentCards.push_back(rand() % DEPMAX) + DEPMIN);
