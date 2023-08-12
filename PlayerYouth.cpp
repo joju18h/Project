@@ -1,4 +1,4 @@
-#include "PlayerYouth.h"
+#include "YouthPlayer.h"
 
 template<typename T>
 YouthPlayer<T>::YouthPlayer() : Player<T>("Noah"), age(4)
@@ -15,7 +15,7 @@ YouthPlayer<T>::YouthPlayer(int age) : Player<T>("Noah"), age(age)
 }
 
 template<typename T>
-YouthPlayer<T>::YouthPlayer(const YouthPlayer& player) : Player<T>(player), age(player.age), attack_cards(player.attack_cards)
+YouthPlayer<T>::YouthPlayer(const YouthPlayer &player) : Player<T>(player), age(player.age), attack_cards(player.attack_cards)
 {
 }
 
@@ -43,7 +43,7 @@ void YouthPlayer<T>::add_attack_card(T card)
 }
 
 template<typename T>
-void YouthPlayer<T>::add_attack_cards(const std::vector<T>& cards)
+void YouthPlayer<T>::add_attack_cards(const std::vector<T> &cards)
 {
     attack_cards.insert(attack_cards.end(), cards.begin(), cards.end());
 }
@@ -63,6 +63,24 @@ template<typename T>
 T YouthPlayer<T>::sum_all_cards() const
 {
     return sum_attack_cards() - sumDependentCards();
+}
+
+template<typename T>
+void YouthPlayer<T>::addDependentCard(int card)
+{
+    Player<T>::addDependentCard(card);
+}
+
+template<typename T>
+void YouthPlayer<T>::addDependentCard(const std::vector<int> &cards)
+{
+    Player<T>::addDependentCard(cards);
+}
+
+template<typename T>
+int YouthPlayer<T>::sumDependentCards() const
+{
+    return Player<T>::sumDependentCards();
 }
 
 template<typename T>
