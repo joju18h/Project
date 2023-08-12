@@ -51,29 +51,34 @@ class Player
 };
 
 template <typename T>
-Player<T>::Player(){
+Player<T>::Player()
+{
     this->name = "";
     this->cash = 1000.00;
 };
 
 template <typename T>
-Player<T>::Player(const std::string player){
+Player<T>::Player(const std::string player)
+{
     this->name = player;
     this->cash = 1000.00;
 };
 
 template <typename T>
-void Player<T>::setName(const std::string name){
+void Player<T>::setName(const std::string name)
+{
     this->name = name;
 };
 
 template <typename T>
-std::string Player<T>::getName() const{
+std::string Player<T>::getName() const
+{
     return this->name;
 };
 
 template <typename T>
-void Player<T>::addDependentCard(int numCards){
+void Player<T>::addDependentCard(int numCards)
+{
     //generate random number with srand based on time
     this->dependentCards.clear();
     srand(time(0));
@@ -83,13 +88,15 @@ void Player<T>::addDependentCard(int numCards){
 };
 
 template <typename T>
-void Player<T>::addDependentCard(){
+void Player<T>::addDependentCard()
+{
     srand(time(0));
     this->dependentCards.push_back(rand() % DEPMAX) + DEPMIN);
 };
 
 template <typename T>
-int Player<T>::sumDependentCards() const{
+int Player<T>::sumDependentCards() const
+{
     int sum = 0;
     for (int card : this->dependent_cards) {
         sum += card;
@@ -98,7 +105,8 @@ int Player<T>::sumDependentCards() const{
 };
 
 template <typename T>
-T Player<T>::sumAttackCards() const{
+T Player<T>::sumAttackCards() const
+{
     T sum = 0;
     for (T card : this->attackCards) {
         sum += card;
@@ -107,42 +115,50 @@ T Player<T>::sumAttackCards() const{
 };
 
 template <typename T>
-double Player<T>::getCash() const{
+double Player<T>::getCash() const
+{
     return this->cash;
 };
 
 template <typename T>
-void Player<T>::addCash(double amt){
+void Player<T>::addCash(double amt)
+{
     this->cash += amt;
 };
 
 template <typename T>
-bool Player<T>::operator==(const Player &p2){
+bool Player<T>::operator==(const Player &p2)
+{
     return (this->sumAllCards() == p2.sumAllCards());
 };
 
 template <typename T>
-bool Player<T>::operator>(const Player &p2){
+bool Player<T>::operator>(const Player &p2)
+{
     return (this->sumAllCards() > p2.sumAllCards());
 };
 
 template <typename T>
-bool Player<T>::operator<(const Player &p2){
+bool Player<T>::operator<(const Player &p2)
+{
     return (this->sumAllCards() < p2.sumAllCards());
 };
 
 template <typename T>
-void Player<T>::operator<<(double amt){
+void Player<T>::operator<<(double amt)
+{
     addCash(amt);
 };
 
 template <typename T>
-void Player<T>::operator>>(double amt){
+void Player<T>::operator>>(double amt)
+{
     addCash(-amt);
 };
 
 template <typename T>
-T Player<T>::sumAllCards() const{
+T Player<T>::sumAllCards() const
+{
     return (this->sumAttackCards() - this->sumDependentCards());
 };
 #endif // PLAYER_H
