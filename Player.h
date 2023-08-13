@@ -34,17 +34,22 @@ class Player
         // BaseClass Functions
         void setName(const std::string);
         std::string getName() const;
-        void addDependentCard(int numCards);
+
+        void addDependentCards(int numCards);
         void addDependentCard();
+
         int sumDependentCards() const;
         T sumAttackCards() const;
+
         double getCash() const;
         void addCash(double);
+
         bool operator==(const Player &p2);
         bool operator>(const Player &p2);
         bool operator<(const Player &p2);
         void operator<<(double amt);
         void operator>>(double amt);
+
         T sumAllCards() const;
 
         virtual ~Player(){};
@@ -77,7 +82,7 @@ std::string Player<T>::getName() const
 };
 
 template <typename T>
-void Player<T>::addDependentCard(int numCards)
+void Player<T>::addDependentCards(int numCards)
 {
     //generate random number with srand based on time
     this->dependentCards.clear();
@@ -98,7 +103,7 @@ template <typename T>
 int Player<T>::sumDependentCards() const
 {
     int sum = 0;
-    for (int card : this->dependent_cards) {
+    for (int card : this->dependentCards) {
         sum += card;
     }
     return sum;
@@ -147,13 +152,13 @@ bool Player<T>::operator<(const Player &p2)
 template <typename T>
 void Player<T>::operator<<(double amt)
 {
-    addCash(amt);
+    this->addCash(amt);
 };
 
 template <typename T>
 void Player<T>::operator>>(double amt)
 {
-    addCash(-amt);
+    this->addCash(-amt);
 };
 
 template <typename T>

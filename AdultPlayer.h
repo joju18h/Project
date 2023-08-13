@@ -15,13 +15,13 @@ class AdultPlayer : public Player<T>
         //hardcoded to kenneth
         AdultPlayer<T>(const std::string player = "Kenneth") : Player<T>(player){};
 
-        Player<T> operator=(const Player<T> &otherPlayer);
+       // Player<T> operator=(const Player<T>& otherPlayer);
         void addAttackCard();
         void addAttackCard(int);
 
         ~AdultPlayer(){};
 };
-
+/*
 template <typename T>
 Player<T> AdultPlayer<T>::operator=(const Player<T> &otherPlayer)
 {
@@ -32,7 +32,7 @@ Player<T> AdultPlayer<T>::operator=(const Player<T> &otherPlayer)
 
     return *this;
 }
-
+*/
 template <typename T>
 void AdultPlayer<T>::addAttackCard(int numCards)
 {
