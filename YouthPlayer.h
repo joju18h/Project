@@ -1,113 +1,80 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef YOUTHPLAYER_H
+#define YOUTHPLAYER_H
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <cstdlib>
-#include <ctime>
+#include "Player.h"
+//#include "AdultPlayer.h"
 
-
-//Range constants for generating dependent cards
-#define DEPMIN 1
-#define DEPMAX 5
-
-//base Player class definition
-template <typename T>
-class Player
-{
-    protected:
-        std::string name;
-        double cash;
-        //std::vector<T> attackCards;
-        std::vector<int> dependentCards;
-
-    public:
-        Player(); //default constructor
-        Player(const std::string player); //hardcoded names to be passed
-
-        // BaseClass Functions
-        void setName(const std::string);
-        std::string getName() const;
-
-        void addDependentCards(int numCards);
-        void addDependentCard();
-        int sumDependentCards() const;
-
-        double getCash() const;
-        void addCash(double);
-
-        //virtual overridden functions
-        virtual Player<T>& operator=(const Player<T>& otherPlayer) =0;
-        virtual void addAttackCard() =0;
-        virtual void addAttackCard(int) =0;
-        virtual  T sumAttackCards() const =0;
-        virtual T sumAllCards() const =0;
-        virtual bool operator==(const Player<T>& p2) = 0;
-        virtual bool operator>(const Player<T> &p2) =0;
-        virtual bool operator<(const Player<T> &p2) =0;
-        virtual void operator<<(double amt) =0;
-        virtual void operator>>(double amt) =0;
-
-        ~Player(){};
-};
+//Range constants for generating attack cards
+#define ATTACKMIN 0
 
 template <typename T>
-Player<T>::Player()
+class YouthPlayer : public Player<T>
 {
-    this->name = "";
-    this->cash = 1000.00;
-};
+    int age;
+    int attackMax;
+    std::vector<T> attackCards;
 
-template <typename T>
-Player<T>::Player(const std::string player)
-{
-    this->name = player;
-    this->cash = 1000.00;
-};
+public:
 
-template <typename T>
-void Player<T>::setName(const std::string name)
-{
-    this->name = name;
-};
+   YouthPlayer<T>(const std::string player, int age) : Player<T>(player) {
+        if (age < 4) {
+            this->age = 4;
+        }
 
-template <typename T>
-std::string Player<T>::getName() const
-{
-    return this->name;
-};
+        else if (age > 18) {
+            this->age = 19;
+        }
 
-template <typename T>
-void Player<T>::addDependentCards(int numCards)
-{
-    //generate random number with srand based on time
-    this->dependentCards.clear();
-    srand(time(0));
-    for(int i = 0; i < numCards; i++){
-        this->dependentCards.push_back((rand() % DEPMAX) + DEPMIN);
+        else this->age = age;
+
+        attackMax= this->age / 2;
     }
+
+    Player<T>& operator=(const Player<T>& otherPlayer);
+    void addAttackCard();
+    void addAttackCard(int);
+
+    T sumAttackCards() const;
+    T sumAllCards() const;
+
+    bool operator==(const Player<T>& p2);
+    bool operator>(const Player<T>& p2);
+    bool operator<(const Player<T>& p2);
+    void operator<<(double amt);
+    void operator>>(double amt);
+
+    ~YouthPlayer() {};
 };
 
+
 template <typename T>
-void Player<T>::addDependentCard()
+Player<T>& YouthPlayer<T>::operator=(const Player<T>& otherPlayer)
+{
+    this->name = otherPlayer.getName();
+    this->cash = otherPlayer.getCash();
+    return *this;
+}
+
+template <typename T>
+void YouthPlayer<T>::addAttackCard(int numCards)
+{
+    this->attackCards.clear();
+    srand(time(0));
+    for (int i = 0; i < numCards; i++)
+    {
+        this->attackCards.push_back((T) ((rand() / (T)RAND_MAX) + (rand() % attackMax)));
+    }
+}
+
+template <typename T>
+void YouthPlayer<T>::addAttackCard()
 {
     srand(time(0));
-    this->dependentCards.push_back((rand() % DEPMAX) + DEPMIN);
-};
+    this->attackCards.push_back((T) ((rand()/(T)RAND_MAX) + (rand() % attackMax)));
+}
 
 template <typename T>
-int Player<T>::sumDependentCards() const
-{
-    int sum = 0;
-    for (int card : this->dependentCards) {
-        sum += card;
-    }
-    return sum;
-};
-
-/*template <typename T>
-T Player<T>::sumAttackCards() const
+T YouthPlayer<T>::sumAttackCards() const
 {
     T sum = 0;
     for (T card : this->attackCards) {
@@ -115,54 +82,40 @@ T Player<T>::sumAttackCards() const
     }
     return sum;
 };
-*/
+
 template <typename T>
-double Player<T>::getCash() const
+T YouthPlayer<T>::sumAllCards() const
 {
-    return this->cash;
+    return ((T)(this->sumAttackCards() - this->Player<T>::sumDependentCards()));
 };
 
 template <typename T>
-void Player<T>::addCash(double amt)
-{
-    this->cash += amt;
-};
-
-/*
-template <typename T>
-bool Player<T>::operator==(const Player &p2)
+bool YouthPlayer<T>::operator==(const Player<T>& p2)
 {
     return (this->sumAllCards() == p2.sumAllCards());
 };
 
 template <typename T>
-bool Player<T>::operator>(const Player &p2)
+bool YouthPlayer<T>::operator>(const Player<T>& p2)
 {
     return (this->sumAllCards() > p2.sumAllCards());
 };
 
 template <typename T>
-bool Player<T>::operator<(const Player &p2)
+bool YouthPlayer<T>::operator<(const Player<T>& p2)
 {
     return (this->sumAllCards() < p2.sumAllCards());
 };
 
 template <typename T>
-void Player<T>::operator<<(double amt)
+void YouthPlayer<T>::operator<<(double amt)
 {
-    this->addCash(amt);
+    this->Player<T>::addCash(amt);
 };
 
 template <typename T>
-void Player<T>::operator>>(double amt)
+void YouthPlayer<T>::operator>>(double amt)
 {
-    this->addCash(-amt);
+    this->Player<T>::addCash(-amt);
 };
-
-template <typename T>
-T Player<T>::sumAllCards() const
-{
-    return ((T)(this->sumAttackCards() - this->sumDependentCards()));
-};*/
-
-#endif // PLAYER_H
+#endif
