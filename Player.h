@@ -83,7 +83,7 @@ void Player<T>::addDependentCard(int numCards)
     this->dependentCards.clear();
     srand(time(0));
     for(int i = 0; i < numCards; i++){
-        this->dependentCards.push_back(rand() % DEPMAX) + DEPMIN);
+        this->dependentCards.push_back((rand() % DEPMAX) + DEPMIN);
     }
 };
 
@@ -91,7 +91,7 @@ template <typename T>
 void Player<T>::addDependentCard()
 {
     srand(time(0));
-    this->dependentCards.push_back(rand() % DEPMAX) + DEPMIN);
+    this->dependentCards.push_back((rand() % DEPMAX) + DEPMIN);
 };
 
 template <typename T>

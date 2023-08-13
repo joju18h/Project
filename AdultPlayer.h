@@ -16,8 +16,8 @@ class AdultPlayer : public Player<T>
         AdultPlayer<T>(const std::string player = "Kenneth") : Player<T>(player){};
 
         AdultPlayer &operator=(const Player<T> &otherPlayer);
-        void addAttackCard(){};
-        void addAttackCard(int){};
+        void addAttackCard();
+        void addAttackCard(int);
 
         ~AdultPlayer(){};
 };
