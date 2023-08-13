@@ -1,0 +1,17 @@
+1) In the main() function, the number of players is hardcoded to 2. How could we modify the main() function to let the players decide how many players there are? (0.5 mark)
+Answer: 
+``` We can start with an empty vector of players, and then ask the user how many players there are. 
+Then, we can use a for loop to add that many players to the vector.To elaborate on this, after getting the number from the user, you could prompt them to enter the names of the players and create corresponding Player objects.
+ Then, you could add those Player objects to the vector.```
+
+2)For this product, can you think of a simpler way to implement the two versions (low definition/high definition) of this game? (1 mark)
+Answer: 
+```For this, we could use a single class to represent the player, the contains name,age,cash, dependent cards(vector of type int) and attack cards. But here the attack cards are vectors of type double.
+ Then, depending on the game mode we can use typecasting to convert double to int for the low definition version.```
+
+3)If we wished to add a nice graphical interface to this program, how would we do it? With C++? By interacting with another program? By adding a library? By using a different language entirely? (0.5 mark)
+Answer: 
+``` We can use a GUI library like Qt to create a graphical interface for our C++ game. 
+Since we are already using C++ for the game, it would be easier to use a C++ library for the GUI.
+Alternatively, we could use a different language like Python to create the GUI (using a module like tkinter) and then interact with the C++ program.Owing to the simplicty of python, it would be easier to create a GUI using python, provided we have a good understanding of the language.```
+
