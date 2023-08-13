@@ -1,23 +1,30 @@
+//CardGame.h -  header file for running the game
 #pragma once
 
+#ifndef _CARDGAME_H_
+#define _CARDGAME_H_
+
+#include <iomanip>
 #include "Player.h"
 #include "AdultPlayer.h"
 #include "YouthPlayer.h"
 
+using namespace std;
 
 const int MAX = 21;
 const int NUM = 2;
 
 template <class T>
-class CardGame {
+class CardGame  {
 	std::string mode;
+
 public :
-	CardGame(int choice){
+	CardGame(int choice) {
 		if (choice == 0) {
-			mode = "high";
+			mode = "Low";
 		}
 
-		else mode = "low";
+		else mode = "High";
 	}
 
 	void run() {
@@ -28,14 +35,12 @@ public :
 		std::cin >> age;
 		player[0] = new YouthPlayer<T>("Noah", age);
 		player[1] = new AdultPlayer<T>("Kenneth");
+		std::cout << std::fixed << std::setprecision(3);
 
 		bool gameOver = false;
 		do {
 			float amount = 0;
-			// Prompt the players for the amount they want to bet. It has to be between $10 and $300
-			// If they enter a value below $10, set the amount to $10
-			// If they enter a value above $300, set the amount to $300
-			
+
 			std::cout << "How much do you both want to bet ? (min$10, max $300) : ";
 			std::cin >> amount;
 
@@ -49,7 +54,8 @@ public :
 				amount = 300;
 			}
 
-			cout << endl;
+			std::cout << std::endl;
+
 			for (int i = 0; i < NUM; ++i) {
 				int num = 0;
 				char choice;
@@ -66,7 +72,7 @@ public :
 
 				// Report the player's name and the sum of the player's cards
 				std::cout << player[i]->getName() << ", the sum of your cards is "
-					<< player[i]->sumAllCards() <<std::endl;
+					<< player[i]->sumAllCards() << std::endl;
 
 				// Ask the player if (s)he wishes to add a dependent card to the existing list of dependent cards
 				std::cout << "Do you want to add a dependent card? [Y,N] : ";
@@ -74,11 +80,10 @@ public :
 
 				if (choice == 'y' || choice == 'Y') {
 					player[i]->addDependentCard();
+					// Report the player's name and the sum of the player's cards
+					std::cout << player[i]->getName() << ", the sum of your cards is "
+						<< player[i]->sumAllCards() << std::endl;
 				}
-
-				// Report the player's name and the sum of the player's cards
-				std::cout << player[i]->getName() << ", the sum of your cards is "
-					<< player[i]->sumAllCards() << std::endl;
 
 				while (getchar() != '\n');
 
@@ -87,16 +92,15 @@ public :
 				std::cin >> choice;
 
 				if (choice == 'y' || choice == 'Y') {
-					player[i]->addDependentCard();
+					player[i]->addAttackCard();
+					// Report the player's name and the sum of the player's cards
+					std::cout << player[i]->getName() << ", the sum of your cards is "
+						<< player[i]->sumAllCards() << std::endl;
 				}
-
-				// Report the player's name and the sum of the player's cards
-				std::cout << player[i]->getName() << ", the sum of your cards is "
-					<< player[i]->sumAllCards() <<std::endl;
 
 				while (getchar() != '\n');
 
-				cout << endl;
+				std::cout << std::endl;
 			}
 
 			//Report the name and points for each player
@@ -105,10 +109,10 @@ public :
 					<< player[i]->sumAllCards() << " points." << std::endl;
 			}
 
-			cout << endl;
+			std::cout << std::endl;
 
 			//Determine a winner
-			// 
+
 			// If both players are disqualified, print that both players are over the limit and have been disqualified.
 			if (player[0]->sumAllCards() > 21 && player[1]->sumAllCards() > 21) {
 				std::cout << "Both players are over the limit and have been disqualified.\n";
@@ -133,13 +137,13 @@ public :
 				*player[0] << amount;
 				*player[1] >> amount;
 
-				
+
 			}
 
-			else if (player[0]==player[1]) {
+			else if (player[0] == player[1]) {
 				std::cout << "Both players have tied with equal number of points. \n";
 			}
-			
+
 			else {
 				for (int i = 0; i < NUM; i++) {
 				std:cout << player[i]->getName() << " has " << player[0]->sumAllCards();
@@ -157,20 +161,22 @@ public :
 					*player[1] << amount;
 				}
 			}
-			
 
-			cout << endl;
+
+			std::cout << std::endl;
 			for (int i = 0; i < NUM; i++) {
 				std::cout << player[i]->getName() << " has " << player[i]->getCash() << std::endl;
 				if (player[i]->getCash() < 0) {
 					gameOver = true;
 				}
 			}
-			
-			cout << endl;
+
+			std::cout << endl;
 
 		} while (!gameOver);
 
-		cout << "The game is over." << endl;
+		std::cout << "The game is over." << std::endl;
 	}
 };
+
+#endif // !_CARDGAME_H_
