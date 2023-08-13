@@ -12,6 +12,6 @@ Answer:
 3)If we wished to add a nice graphical interface to this program, how would we do it? With C++? By interacting with another program? By adding a library? By using a different language entirely? (0.5 mark)
 Answer: 
 ``` We can use a GUI library like Qt to create a graphical interface for our C++ game. 
-Since we are already using C++ for the game, it would be easier to use a C++ library for the GUI.
+Since we are already using C++ for the game, it would be fairly easy to use a C++ library for the GUI.
 Alternatively, we could use a different language like Python to create the GUI (using a module like tkinter) and then interact with the C++ program.Owing to the simplicty of python, it would be easier to create a GUI using python, provided we have a good understanding of the language.```
 
