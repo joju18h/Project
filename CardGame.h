@@ -191,7 +191,8 @@ void CardGame<T>::determineWinner() {
 template <class T>
 void CardGame<T>::generateCashReport() {
 	for (int i = 0; i < NUM; i++) {
-		std::cout << player[i]->getName() << " has " << setprecision(2) << player[i]->getCash() << std::endl;
+		std::cout << std::fixed << std::setprecision(2);
+		std::cout << player[i]->getName() << " has " << player[i]->getCash() << std::endl;
 		if (player[i]->getCash() < 0) {
 			gameOver = true;
 		}
@@ -200,6 +201,7 @@ void CardGame<T>::generateCashReport() {
 
 template <class T>
 void CardGame<T>::generatePlayerReport(Player<T>* player) {
+	std::cout << std::fixed << std::setprecision(3);
 	std::cout << player->getName() << " has "
 		<< player->sumAllCards() << " points." << std::endl;
 }
