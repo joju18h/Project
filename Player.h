@@ -19,17 +19,11 @@ class Player
     protected:
         std::string name;
         double cash;
-        std::vector<T> attackCards;
-        std::vector<int> dependentCards;
+        std::vector<int> dependentCards; //always int
 
     public:
         Player(); //default constructor
         Player(const std::string player); //hardcoded names to be passed
-
-        //virtual functions
-        virtual Player<T> operator=(const Player<T> &otherPlayer) { return *this;};
-        virtual void addAttackCard(){};
-        virtual void addAttackCard(int){};
 
         // BaseClass Functions
         void setName(const std::string);
@@ -37,24 +31,32 @@ class Player
 
         void addDependentCards(int numCards);
         void addDependentCard();
-
         int sumDependentCards() const;
-        T sumAttackCards() const;
 
         double getCash() const;
         void addCash(double);
 
-        bool operator==(const Player &p2);
-        bool operator>(const Player &p2);
-        bool operator<(const Player &p2);
-        void operator<<(double amt);
-        void operator>>(double amt);
+        //overloaded operator function
+        Player& operator=(const Player& otherPlayer);
 
-        T sumAllCards() const;
+        //virtual overridden functions
+        virtual void addAttackCard() =0;
+        virtual void addAttackCard(int) =0;
+        virtual  T sumAttackCards() const =0;
+        virtual T sumAllCards() const =0;
+        virtual bool operator==(const Player<T>& p2) = 0;
+        virtual bool operator>(const Player<T> &p2) =0;
+        virtual bool operator<(const Player<T> &p2) =0;
+        virtual void operator<<(double amt) =0;
+        virtual void operator>>(double amt) =0;
 
-        virtual ~Player(){};
+        ~Player(){};
 };
 
+
+//function definitions
+
+//constructor functions
 template <typename T>
 Player<T>::Player()
 {
@@ -69,6 +71,8 @@ Player<T>::Player(const std::string player)
     this->cash = 1000.00;
 };
 
+
+//setter getter functions
 template <typename T>
 void Player<T>::setName(const std::string name)
 {
@@ -82,9 +86,18 @@ std::string Player<T>::getName() const
 };
 
 template <typename T>
+double Player<T>::getCash() const
+{
+    return this->cash;
+};
+
+//dependent card generator functions
+//these functions generate random number 
+//between 1 (DEPMIN) to 5 (DEPMIN)
+template <typename T>
 void Player<T>::addDependentCards(int numCards)
 {
-    //generate random number with srand based on time
+    
     this->dependentCards.clear();
     srand(time(0));
     for(int i = 0; i < numCards; i++){
@@ -99,6 +112,7 @@ void Player<T>::addDependentCard()
     this->dependentCards.push_back((rand() % DEPMAX) + DEPMIN);
 };
 
+//sums all the dependent cards
 template <typename T>
 int Player<T>::sumDependentCards() const
 {
@@ -109,62 +123,21 @@ int Player<T>::sumDependentCards() const
     return sum;
 };
 
-template <typename T>
-T Player<T>::sumAttackCards() const
-{
-    T sum = 0;
-    for (T card : this->attackCards) {
-        sum += (T)card;
-    }
-    return sum;
-};
-
-template <typename T>
-double Player<T>::getCash() const
-{
-    return this->cash;
-};
-
+//Adds amount to player's cash
 template <typename T>
 void Player<T>::addCash(double amt)
 {
     this->cash += amt;
 };
 
-template <typename T>
-bool Player<T>::operator==(const Player &p2)
-{
-    return (this->sumAllCards() == p2.sumAllCards());
-};
-
-template <typename T>
-bool Player<T>::operator>(const Player &p2)
-{
-    return (this->sumAllCards() > p2.sumAllCards());
-};
-
-template <typename T>
-bool Player<T>::operator<(const Player &p2)
-{
-    return (this->sumAllCards() < p2.sumAllCards());
-};
-
-template <typename T>
-void Player<T>::operator<<(double amt)
-{
-    this->addCash(amt);
-};
-
-template <typename T>
-void Player<T>::operator>>(double amt)
-{
-    this->addCash(-amt);
-};
-
-template <typename T>
-T Player<T>::sumAllCards() const
-{
-    return ((T)(this->sumAttackCards() - this->sumDependentCards()));
-};
+//overloaded operator function
+template <class T>
+Player<T>& Player<T>::operator=(const Player<T> & otherPlayer) {
+    this->name = otherPlayer.getName();
+    this->cash = otherPlayer.getCash();
+    this->dependentCards = otherPlayer.dependentCards;
+    this->attackCards = otherPlayer.attackCards;
+    return *this;
+}
 
 #endif // PLAYER_H
