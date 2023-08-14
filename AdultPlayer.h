@@ -1,4 +1,4 @@
-//Adultplayer.h
+//AdultPlayer.h - header file for adult player
 #ifndef ADULTPLAYER_H
 #define ADULTPLAYER_H
 
@@ -14,17 +14,13 @@ class AdultPlayer : public Player<T>
     std::vector<T> attackCards;
 
     public:
-        //hardcoded to kenneth
-        AdultPlayer<T>(const std::string player = "Kenneth") : Player<T>(player){};
-
-        
+        //name is hardcoded to kenneth
+        AdultPlayer(const std::string player = "Kenneth") : Player<T>(player){};
         void addAttackCard();
         void addAttackCard(int);
-
         T sumAttackCards() const;
         T sumAllCards() const;
-
-        Player<T>& operator=(const Player<T>& otherPlayer);
+        AdultPlayer<T>& operator=(const AdultPlayer<T>& otherPlayer);
         bool operator==(const Player<T>& p2);
         bool operator>(const Player<T>& p2);
         bool operator<(const Player<T>& p2);
@@ -34,14 +30,14 @@ class AdultPlayer : public Player<T>
         ~AdultPlayer(){};
 };
 
+//overloaded operator function
 template <typename T>
-Player<T>& AdultPlayer<T>::operator=(const Player<T> &otherPlayer)
+AdultPlayer<T>& AdultPlayer<T>::operator=(const AdultPlayer& otherPlayer)
 {
-    this->name = otherPlayer.getName();
-    this->cash = otherPlayer.getCash();
-    return *this;
+    *this = otherPlayer;
 }
 
+//adds attacks cards for a player
 template <typename T>
 void AdultPlayer<T>::addAttackCard(int numCards)
 {
@@ -49,17 +45,31 @@ void AdultPlayer<T>::addAttackCard(int numCards)
     srand(time(0));
     for (int i = 0; i < numCards; i++)
     {
-        this->attackCards.push_back((T)((rand() / (T)RAND_MAX) + (rand() % ATTACKMAX)));
+        if (std::is_integral<T>::value) {
+            //generates a random integer number between 1 and 15
+            this->attackCards.push_back((int)(rand() % ATTACKMAX) + ATTACKMIN);
+        }
+        else {
+            //generates a random number between 0 and 14
+            //add ATTACKMIN = 1 to change the value so
+            //it falls between 0 to 15
+            this->attackCards.push_back((rand() / (double)RAND_MAX * (ATTACKMAX - 1)) + ATTACKMIN);
+        }
     }
 }
 
 template <typename T>
 void AdultPlayer<T>::addAttackCard()
 {
-    srand(time(0));
-    this->attackCards.push_back((T)((rand() / (T)RAND_MAX) + (rand() % ATTACKMAX)));
+    if (std::is_integral<T>::value) {
+        this->attackCards.push_back((int)(rand() % ATTACKMAX)+ATTACKMIN);
+    }
+    else {
+        this->attackCards.push_back((rand() / (double)RAND_MAX * (ATTACKMAX - 1)) + ATTACKMIN);
+    }
 }
 
+//sum cards functions
 template <typename T>
 T AdultPlayer<T>::sumAttackCards() const
 {
@@ -75,6 +85,8 @@ T AdultPlayer<T>::sumAllCards() const
 {
     return ((T)(this->sumAttackCards() - this->Player<T>::sumDependentCards()));
 };
+
+//overridden comparison operator functions 
 
 template <typename T>
 bool AdultPlayer<T>::operator==(const Player<T>& p2)
@@ -94,6 +106,7 @@ bool AdultPlayer<T>::operator<(const Player<T>& p2)
     return (this->sumAllCards() < p2.sumAllCards());
 };
 
+//functions to remove or add cash from a player
 template <typename T>
 void AdultPlayer<T>::operator<<(double amt)
 {
@@ -105,4 +118,5 @@ void AdultPlayer<T>::operator>>(double amt)
 {
     this->Player<T>::addCash(-amt);
 };
+
 #endif // ADULTPLAYER_H
